@@ -1,1 +1,0 @@
-print('Não é o Jorge Gyotoku')
