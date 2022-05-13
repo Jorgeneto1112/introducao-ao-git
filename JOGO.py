@@ -1,4 +1,3 @@
-import random
 from Sorteio_países import sorteia_pais 
 from Base_países import normaliza
 from Está_na_lista import esta_na_lista
@@ -3822,17 +3821,20 @@ dados = {
 dados = normaliza(dados)    
 sorteio =  sorteia_pais(dados)
 
-print(sorteio)
 print('Um país foi escolhido, tente adivinhar!\n')
 
 print(sorteio)
 escolha = True
+lista_escolha = []
+lista_d = []
 tent = 20
 i=0
 while i < 20 and escolha != sorteio:
     escolha = input('Qual o seu palpite?\n')
     if escolha == sorteio:
         break
+    
+    lista_escolha.append(escolha)
 
     lista_paises = []
     for pais in dados.keys():
@@ -3853,7 +3855,13 @@ while i < 20 and escolha != sorteio:
 
         d = haversine(6371, lat1, long1, lat2, long2)
         if sorteio != pais:
-            print('Distância em km: {}'.format(d))
+          lista_d.append(d)
+
+          j=0
+          while j < len(lista_d):
+            print('Distância até {}: {}km'.format(lista_escolha[j], lista_d[j]))
+            j+=1
+          
     
 
     else:
