@@ -1,4 +1,3 @@
-from http.client import OK
 import random
 from Sorteio_países import sorteia_pais 
 from Base_países import normaliza
