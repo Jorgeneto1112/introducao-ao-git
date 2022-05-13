@@ -3823,18 +3823,28 @@ sorteio =  sorteia_pais(dados)
 
 print('Um país foi escolhido, tente adivinhar!\n')
 
-print(sorteio)
+
 escolha = True
 lista_escolha = []
 lista_d = []
 tent = 20
 i=0
 while i < 20 and escolha != sorteio:
-    escolha = input('Qual o seu palpite?\n')
+    escolha = input('Qual o seu palpite? ')
     if escolha == sorteio:
         break
     
-    lista_escolha.append(escolha)
+    print('\n')
+
+    if escolha == 'dica':
+      print('----------------------------------------')
+      print('1. Cor da bandeira  - custa 4 tentativas')
+      print('2. Letra da capital - custa 3 tentativas')
+      print('3. Área             - custa 6 tentativas')
+      print('4. População        - custa 5 tentativas')
+      print('5. Continente       - custa 7 tentativas')
+      print('0. Sem dica')
+      print('----------------------------------------')
 
     lista_paises = []
     for pais in dados.keys():
@@ -3843,6 +3853,8 @@ while i < 20 and escolha != sorteio:
 
     if escolha in lista_paises:
         
+        lista_escolha.append(escolha)
+
         info_dicio = (dados[sorteio])
         coord = (info_dicio['geo'])
         lat1 = coord['latitude']
@@ -3859,15 +3871,16 @@ while i < 20 and escolha != sorteio:
 
           j=0
           while j < len(lista_d):
-            print('Distância até {}: {}km'.format(lista_escolha[j], lista_d[j]))
+            print('Distância até {0}: {1:.0f}km'.format(lista_escolha[j], lista_d[j]))
             j+=1
           
+          print('\n')
     
 
     else:
         i-=1
         tent+=1
-        print('País desconhecido')
+        print('País desconhecido\n')
     
     i+=1
     tent-=1
