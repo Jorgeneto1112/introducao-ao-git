@@ -1,8 +1,10 @@
+#Import das funcões
 from Sorteio_países import sorteia_pais 
 from Base_países import normaliza
 from Está_na_lista import esta_na_lista
 from Haversine import haversine
 
+#Dados
 dados = {
   "asia": {
     "afeganistao": {
@@ -3823,17 +3825,20 @@ sorteio =  sorteia_pais(dados)
 
 print('Um país foi escolhido, tente adivinhar!\n')
 
-
+#Declara variáveis
 escolha = True
 lista_escolha = []
 lista_d = []
-lista_dicas = []
+dicio_dicas = {}
 tent = 20
+
+#Funcionamento do jogo
 while tent > 0 and escolha != sorteio:
     escolha = input('Qual o seu palpite? ')
     if escolha == sorteio:
         break
-
+    
+    #Declara dicas
     info_dicio = (dados[sorteio])
     band = 0
     area = (info_dicio['area'])
@@ -3854,33 +3859,36 @@ while tent > 0 and escolha != sorteio:
       print('----------------------------------------')
 
       desejo = input('Escolha sua opção [0|1|2|3|4|5]: ')
+
+      #Condições para as dicas
       if desejo == '0':
         print('0')
+
       if desejo == '1':
         print('0')
         tent-=4
+
       if desejo == '2':
         print('0')
         tent-=3
+
       if desejo == '3':
-        print('Área: {}'.format(area))
+        print('Área: {} km2'.format(area))
         tent-=6
-        lista_dicas.append(area)
+        dicio_dicas['Área -> '] = area
+
       if desejo == '4':
-        print('Populção: {}'.format(pop))
+        print('Populção: {} habitantes'.format(pop))
         tent-=5
-        lista_dicas.append(pop)
+        dicio_dicas['População -> '] = pop
+
       if desejo == '5':
         print('Continente: {}'.format(cont))
         tent-=7
-        lista_dicas.append(cont)
-
-      print('Dicas:')
-      for alguma_dica in lista_dicas:
-        print(alguma_dica)
-      
+        dicio_dicas['Continente -> '] = cont
 
 
+    #Verifica se o país está na lista
     lista_paises = []
     for pais in dados.keys():
         lista_paises.append(pais)
@@ -3890,6 +3898,7 @@ while tent > 0 and escolha != sorteio:
         
         lista_escolha.append(escolha)
 
+        #Distância de Haversine
         info_dicio = (dados[sorteio])
         coord = (info_dicio['geo'])
         lat1 = coord['latitude']
@@ -3906,9 +3915,24 @@ while tent > 0 and escolha != sorteio:
 
           i=0
           while i < len(lista_d):
-            print('Distância até {0}: {1:.0f}km'.format(lista_escolha[i], lista_d[i]))
+            print('Distância até {0}: {1:.0f} km'.format(lista_escolha[i], lista_d[i]))
             i+=1
           
+          print('\n')
+
+          print('Dicas:')
+          
+          #Printa as dicas
+          for chave, valor in dicio_dicas.items():
+            if chave == 'Área -> ':
+              print('{}{} km2'.format(chave, valor))
+
+            elif chave == 'População -> ':
+              print('{}{} habitantes'.format(chave, valor))
+
+            else:
+              print('{}{}'.format(chave, valor))
+
           print('\n')
     
 
@@ -3920,6 +3944,7 @@ while tent > 0 and escolha != sorteio:
     print('Tentativas restantes: {}'.format(tent))
 
 
+#Fim
 if escolha == sorteio:
     print('Parabéns, você acertou!')
 else:
