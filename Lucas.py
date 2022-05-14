@@ -3838,7 +3838,7 @@ while tent > 0 and escolha != sorteio:
     band = 0
     area = (info_dicio['area'])
     pop = (info_dicio['populacao'])
-    cont = 0
+    cont = (info_dicio['continente'])
     
     
     print('\n')
