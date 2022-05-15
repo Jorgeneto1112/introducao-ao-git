@@ -4,8 +4,7 @@ from Sorteio_países import sorteia_pais
 from Base_países import normaliza
 from Está_na_lista import esta_na_lista
 from Haversine import haversine
-from Sorteia_letra import sorteia_letra
-
+from Lista_ordenada import adiciona_em_ordem
 #Dados
 dados = {
   "asia": {
@@ -3834,8 +3833,9 @@ lista_d = []
 dicio_dicas = {}
 tent = 20
 lista_letras_cap=[]
-string_letra_cap=''
 lista_sem_letra_repet=[]
+
+
 
 #Funcionamento do jogo
 while tent > 0 and escolha != sorteio:
@@ -3845,12 +3845,13 @@ while tent > 0 and escolha != sorteio:
     
     #Declara dicas
     info_dicio = (dados[sorteio])
-    band = 0
+    band = (info_dicio['bandeira'])
     area = (info_dicio['area'])
     pop = (info_dicio['populacao'])
     cont = (info_dicio['continente'])
     capital = (info_dicio['capital'])
-    
+    alfabeto=['A','a','B', 'b', 'C','c', 'D','d', 'E','e', 'F','f', 'G','g', 'H','h', 'I','i', 'J','j', 'K','k', 'L','l', 'M','m', 'N','n', 'O','o', 'P','p', 'Q','q', 'R','r', 'S','s', 'T','t', 'U','u', 'V','v', 'W','w', 'X','x', 'Y','y', 'Z','z']
+
     print('\n')
 
     if escolha == 'dica':
@@ -3868,20 +3869,31 @@ while tent > 0 and escolha != sorteio:
       #Condições para as dicas
       if desejo == '0':
         tent+=1
-
+      
+      lista_cores=[]
+      lista_cor_aleat=[]
       if desejo == '1':
-        print('0')
+        cores = band.keys()
+        for cor in cores:
+          lista_cores.append(cor)
+        cor_aleat = random.choice(lista_cores)
+        lista_cor_aleat.append(cor_aleat)
+        print(f'Cores da bandeira: {lista_cor_aleat}')
         tent-=3
-
+      
       if desejo == '2':
-        for letra in capital:
-          lista_letras_cap.append(letra)
-        letra_aleatoria = random.choice(lista_letras_cap)
-        if letra_aleatoria not in lista_sem_letra_repet:
-          lista_sem_letra_repet.append(letra_aleatoria)
-          string_letra_cap += letra_aleatoria
+        lista_letras_cap=list(capital)
         
-        print(f'Letras da capital: {string_letra_cap}')
+        while True:
+          letra_aleatoria = random.choice(lista_letras_cap)
+          letra_aleatoria_minuscula = letra_aleatoria.lower()
+          if letra_aleatoria_minuscula not in lista_sem_letra_repet:
+            if letra_aleatoria in alfabeto:
+              lista_sem_letra_repet.append(letra_aleatoria_minuscula)
+              break
+          
+
+        print(f'Letras da capital: {", ".join(lista_sem_letra_repet)}')
         tent-=2
 
       if desejo == '3':
@@ -3927,8 +3939,8 @@ while tent > 0 and escolha != sorteio:
 
           i=0
           while i < len(lista_d):
-            print('Distância até {0}: {1:.0f} km'.format(lista_escolha[i], lista_d[i]))
-            i+=1
+              print('Distância até {0}: {1:.0f} km'.format(lista_escolha[i], lista_d[i]))
+              i+=1
           
           print('\n')
 
