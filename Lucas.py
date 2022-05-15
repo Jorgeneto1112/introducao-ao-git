@@ -1,8 +1,10 @@
-import random 
-#Import das funcões
+#Imports
+import operator
+import random
 from Sorteio_países import sorteia_pais 
 from Base_países import normaliza
 from Haversine import haversine
+
 #Dados
 dados = {
   "asia": {
@@ -3833,6 +3835,9 @@ tent = 20
 lista_letras_cap=[]
 lista_sem_letra_repet=[]
 lista_cores = []
+n=-1
+lista_cores_print = []
+dicio_escolhas = {}
 
 #Declara dicas
 info_dicio = (dados[sorteio])
@@ -3847,11 +3852,14 @@ for cor, qnt_cor in band.items():
   if qnt_cor != 0:
     lista_cores.append(cor)
 
+print(lista_cores)
+
 
 #Funcionamento do jogo
 while tent > 0 and escolha != sorteio:
+    print(dicio_dicas)
     escolha = input('Qual o seu palpite? ')
-    if escolha == sorteio:
+    if escolha == sorteio or escolha == 'desisto':
         break
 
     print('\n')
@@ -3872,12 +3880,10 @@ while tent > 0 and escolha != sorteio:
       if desejo == '0':
         tent+=1
     
-      n=0
       if desejo == '1':
         n+=1
+        lista_cores_print.append(lista_cores[n])
         tent-=3
-
-        print(dicio_dicas)
 
       
       if desejo == '2':
@@ -3921,6 +3927,8 @@ while tent > 0 and escolha != sorteio:
         else:
           print('{}{}'.format(chave, valor))
 
+      if n > -1:
+        print('Cores da bandeira -> {}'.format(', '.join(lista_cores_print)))
       print('\n')
      
 
@@ -3946,13 +3954,16 @@ while tent > 0 and escolha != sorteio:
         long2 = coord['longitude']
 
         d = haversine(6371, lat1, long1, lat2, long2)
-        if sorteio != pais:
-          lista_d.append(d)
+        if sorteio != pais and escolha not in dicio_escolhas.keys():
+          dicio_escolhas[escolha] = d
+          dicio_ordenado = sorted(dicio_escolhas.items(), key=operator.itemgetter(1))
+          print(dicio_ordenado[0][0])
+          print(dicio_ordenado[0][1])
 
           i=0
           while i < len(lista_d):
-              print('Distância até {0}: {1:.0f} km'.format(lista_escolha[i], lista_d[i]))
-              i+=1
+            print('Distância até {0}: {1:.0f} km'.format(dicio_ordenado[i][i], dicio_ordenado[i][i+1]))
+            i+=1
     
       #Printa as dicas
         print('\n')
@@ -3968,10 +3979,12 @@ while tent > 0 and escolha != sorteio:
           else:
             print('{}{}'.format(chave, valor))
 
+        if n > -1:
+          print('Cores da bandeira -> {}'.format(', '.join(lista_cores_print)))
 
         print('\n')
 
-    if escolha not in lista_paises and escolha != 'dica':
+    if escolha not in lista_paises and escolha != 'dica' and escolha != 'desisto':
         tent+=1
         print('País desconhecido\n')
     
@@ -3981,6 +3994,10 @@ while tent > 0 and escolha != sorteio:
 
 #Fim
 if escolha == sorteio:
-    print('Parabéns, você acertou!')
+  print('Parabéns, você acertou!')
+
+elif escolha == 'desisto':
+  print('O país era {}'.format(sorteio))
+  
 else:
-    print('Acabaram as tentativas, o país era {}'.format(sorteio))
+  print('Acabaram as tentativas, o país era {}'.format(sorteio))
