@@ -2,9 +2,7 @@ import random
 #Import das funcões
 from Sorteio_países import sorteia_pais 
 from Base_países import normaliza
-from Está_na_lista import esta_na_lista
 from Haversine import haversine
-from Lista_ordenada import adiciona_em_ordem
 #Dados
 dados = {
   "asia": {
@@ -3834,7 +3832,22 @@ dicio_dicas = {}
 tent = 20
 lista_letras_cap=[]
 lista_sem_letra_repet=[]
+lista_cores = []
+lista_cores_escolhidas=[]
 
+#Declara dicas
+info_dicio = (dados[sorteio])
+band = (info_dicio['bandeira'])
+area = (info_dicio['area'])
+pop = (info_dicio['populacao'])
+cont = (info_dicio['continente'])
+capital = (info_dicio['capital'])
+alfabeto=['A','a','B', 'b', 'C','c', 'D','d', 'E','e', 'F','f', 'G','g', 'H','h', 'I','i', 'J','j', 'K','k', 'L','l', 'M','m', 'N','n', 'O','o', 'P','p', 'Q','q', 'R','r', 'S','s', 'T','t', 'U','u', 'V','v', 'W','w', 'X','x', 'Y','y', 'Z','z']
+
+for cor, qnt_cor in band.items():
+  if qnt_cor != 0:
+    if cor != 'outras':
+      lista_cores.append(cor)
 
 
 #Funcionamento do jogo
@@ -3842,15 +3855,6 @@ while tent > 0 and escolha != sorteio:
     escolha = input('Qual o seu palpite? ')
     if escolha == sorteio:
         break
-    
-    #Declara dicas
-    info_dicio = (dados[sorteio])
-    band = (info_dicio['bandeira'])
-    area = (info_dicio['area'])
-    pop = (info_dicio['populacao'])
-    cont = (info_dicio['continente'])
-    capital = (info_dicio['capital'])
-    alfabeto=['A','a','B', 'b', 'C','c', 'D','d', 'E','e', 'F','f', 'G','g', 'H','h', 'I','i', 'J','j', 'K','k', 'L','l', 'M','m', 'N','n', 'O','o', 'P','p', 'Q','q', 'R','r', 'S','s', 'T','t', 'U','u', 'V','v', 'W','w', 'X','x', 'Y','y', 'Z','z']
 
     print('\n')
 
@@ -3870,17 +3874,17 @@ while tent > 0 and escolha != sorteio:
       if desejo == '0':
         tent+=1
       
-      lista_cores=[]
-      lista_cor_aleat=[]
       if desejo == '1':
-        cores = band.keys()
-        for cor in cores:
-          lista_cores.append(cor)
-        cor_aleat = random.choice(lista_cores)
-        lista_cor_aleat.append(cor_aleat)
-        print(f'Cores da bandeira: {lista_cor_aleat}')
+    
+        while True:
+          cor_aleat= random.choice(lista_cores)
+          if cor_aleat not in lista_cores_escolhidas:
+            lista_cores_escolhidas.append(cor_aleat)
+            break
+        cores=", ".join(lista_cores_escolhidas)
+        dicio_dicas['Cores da bandeira -> ']=cores
         tent-=3
-      
+    
       if desejo == '2':
         lista_letras_cap=list(capital)
         
@@ -3897,20 +3901,36 @@ while tent > 0 and escolha != sorteio:
         tent-=2
 
       if desejo == '3':
-        print('Área: {} km2'.format(area))
         tent-=5
         dicio_dicas['Área -> '] = area
 
       if desejo == '4':
-        print('Populção: {} habitantes'.format(pop))
         tent-=4
         dicio_dicas['População -> '] = pop
 
       if desejo == '5':
-        print('Continente: {}'.format(cont))
         tent-=6
         dicio_dicas['Continente -> '] = cont
 
+      #Printa as dicas
+      print('\n')
+      print('Dicas:')
+
+      for chave, valor in dicio_dicas.items():
+        if chave == 'Área -> ':
+          print('{}{} km2'.format(chave, valor))
+
+        elif chave == 'População -> ':
+          print('{}{} habitantes'.format(chave, valor))
+        
+        elif chave == 'Cores da bandeira -> ':
+          print(f'{valor} cores')
+
+        else:
+          print('{}{}'.format(chave, valor))
+
+      print('\n')
+     
 
     #Verifica se o país está na lista
     lista_paises = []
@@ -3941,24 +3961,23 @@ while tent > 0 and escolha != sorteio:
           while i < len(lista_d):
               print('Distância até {0}: {1:.0f} km'.format(lista_escolha[i], lista_d[i]))
               i+=1
-          
-          print('\n')
-
-          print('Dicas:')
-          
-          #Printa as dicas
-          for chave, valor in dicio_dicas.items():
-            if chave == 'Área -> ':
-              print('{}{} km2'.format(chave, valor))
-
-            elif chave == 'População -> ':
-              print('{}{} habitantes'.format(chave, valor))
-
-            else:
-              print('{}{}'.format(chave, valor))
-
-          print('\n')
     
+      #Printa as dicas
+        print('\n')
+        print('Dicas:')
+
+        for chave, valor in dicio_dicas.items():
+          if chave == 'Área -> ':
+            print('{}{} km2'.format(chave, valor))
+
+          elif chave == 'População -> ':
+            print('{}{} habitantes'.format(chave, valor))
+
+          else:
+            print('{}{}'.format(chave, valor))
+
+
+        print('\n')
 
     if escolha not in lista_paises and escolha != 'dica':
         tent+=1
