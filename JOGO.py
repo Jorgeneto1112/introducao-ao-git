@@ -3887,45 +3887,58 @@ while jogar == 's':
         print('0. Sem dica')
         print('----------------------------------------')
 
-        desejo = input('Escolha sua opção [0|{}|{}|{}|{}|{}]: '.format(usa_cor, usa_letra, usa_area, usa_pop, usa_cont))
-
         #Condições para as dicas
-        if desejo == '0':
-          tent+=1
-      
-        if desejo == '1':
-          n+=1
-          lista_cores_print.append(lista_cores[n])
-          tent-=3
+        confirma_dica = False
+        while confirma_dica == False:
+
+          desejo = input('Escolha sua opção [0|{}|{}|{}|{}|{}]: '.format(usa_cor, usa_letra, usa_area, usa_pop, usa_cont))
+
+          if desejo == '0':
+            tent+=1
+            confirma_dica = True
         
-        if desejo == '2':
-          lista_letras_cap=list(capital)
+          elif desejo == '1':
+            n+=1
+            lista_cores_print.append(lista_cores[n])
+            tent-=3
+            confirma_dica = True
           
-          while True:
-            letra_aleatoria = random.choice(lista_letras_cap)
-            letra_aleatoria_minuscula = letra_aleatoria.lower()
-            if letra_aleatoria_minuscula not in lista_sem_letra_repet:
-              if letra_aleatoria in alfabeto:
-                lista_sem_letra_repet.append(letra_aleatoria_minuscula)
-                break
-          m =True
-          tent-=2
+          elif desejo == '2':
+            lista_letras_cap=list(capital)
+            
+            while True:
+              letra_aleatoria = random.choice(lista_letras_cap)
+              letra_aleatoria_minuscula = letra_aleatoria.lower()
+              if letra_aleatoria_minuscula not in lista_sem_letra_repet:
+                if letra_aleatoria in alfabeto:
+                  lista_sem_letra_repet.append(letra_aleatoria_minuscula)
+                  break
+            m =True
+            tent-=2
+            confirma_dica = True
 
-        if desejo == '3' and usa_area != 3:
-          tent-=5
-          dicio_dicas['Área -> '] = area
-          usa_area = ''
+          elif desejo == '3' and usa_area == '3':
+            tent-=5
+            dicio_dicas['Área -> '] = area
+            usa_area = ''
+            confirma_dica = True
 
 
-        if desejo == '4' and usa_pop != 4:
-          tent-=4
-          dicio_dicas['População -> '] = pop
-          usa_pop = ''
+          elif desejo == '4' and usa_pop == '4':
+            tent-=4
+            dicio_dicas['População -> '] = pop
+            usa_pop = ''
+            confirma_dica = True
 
-        if desejo == '5' and usa_cont != 5:
-          tent-=6
-          dicio_dicas['Continente -> '] = cont
-          usa_cont = ''
+          elif desejo == '5' and usa_cont == '5':
+            tent-=6
+            dicio_dicas['Continente -> '] = cont
+            usa_cont = ''
+            confirma_dica = True
+
+          else:
+            print('Opção inválida')
+
 
         #Printa as dicas
         print('\n')
