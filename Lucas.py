@@ -4025,6 +4025,9 @@ while jogar == 's':
 
 
   #Fim
+
+  print('\n')
+
   if escolha == sorteio:
     print('O miserável é um gênio, você acertou!')
 
@@ -4033,5 +4036,7 @@ while jogar == 's':
     
   else:
     print('Maciel mandou estudar mais, o país era {}'.format(sorteio))
+
+  print('\n')
 
   jogar = input('Jogar novamente? [s|n] ')
