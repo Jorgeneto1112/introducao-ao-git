@@ -1,8 +1,11 @@
-import random 
-#Import das funcões
+#Imports
+import operator
+import random
+from termcolor import colored
 from Sorteio_países import sorteia_pais 
 from Base_países import normaliza
 from Haversine import haversine
+
 #Dados
 dados = {
   "asia": {
@@ -3827,12 +3830,20 @@ print('Um país foi escolhido, tente adivinhar!\n')
 #Declara variáveis
 escolha = True
 lista_escolha = []
-lista_d = []
 dicio_dicas = {}
 tent = 20
 lista_letras_cap=[]
 lista_sem_letra_repet=[]
 lista_cores = []
+n=-1
+lista_cores_print = []
+dicio_escolhas = {}
+usa_cor = '1'
+usa_letra = '2'
+usa_area = '3'
+usa_pop = '4'
+usa_cont = '5'
+
 
 #Declara dicas
 info_dicio = (dados[sorteio])
@@ -3851,7 +3862,7 @@ for cor, qnt_cor in band.items():
 #Funcionamento do jogo
 while tent > 0 and escolha != sorteio:
     escolha = input('Qual o seu palpite? ')
-    if escolha == sorteio:
+    if escolha == sorteio or escolha == 'desisto':
         break
 
     print('\n')
@@ -3866,19 +3877,16 @@ while tent > 0 and escolha != sorteio:
       print('0. Sem dica')
       print('----------------------------------------')
 
-      desejo = input('Escolha sua opção [0|1|2|3|4|5]: ')
+      desejo = input('Escolha sua opção [0|{}|{}|{}|{}|{}]: '.format(usa_cor, usa_letra, usa_area, usa_pop, usa_cont))
 
       #Condições para as dicas
       if desejo == '0':
         tent+=1
     
-      n=0
       if desejo == '1':
         n+=1
+        lista_cores_print.append(lista_cores[n])
         tent-=3
-
-        print(dicio_dicas)
-
       
       if desejo == '2':
         lista_letras_cap=list(capital)
@@ -3895,17 +3903,21 @@ while tent > 0 and escolha != sorteio:
         print(f'Letras da capital: {", ".join(lista_sem_letra_repet)}')
         tent-=2
 
-      if desejo == '3':
+      if desejo == '3' and usa_area != 3:
         tent-=5
         dicio_dicas['Área -> '] = area
+        usa_area = ''
 
-      if desejo == '4':
+
+      if desejo == '4' and usa_pop != 4:
         tent-=4
         dicio_dicas['População -> '] = pop
+        usa_pop = ''
 
-      if desejo == '5':
+      if desejo == '5' and usa_cont != 5:
         tent-=6
         dicio_dicas['Continente -> '] = cont
+        usa_cont = ''
 
       #Printa as dicas
       print('\n')
@@ -3921,6 +3933,8 @@ while tent > 0 and escolha != sorteio:
         else:
           print('{}{}'.format(chave, valor))
 
+      if n > -1:
+        print('Cores da bandeira -> {}'.format(', '.join(lista_cores_print)))
       print('\n')
      
 
@@ -3946,13 +3960,14 @@ while tent > 0 and escolha != sorteio:
         long2 = coord['longitude']
 
         d = haversine(6371, lat1, long1, lat2, long2)
-        if sorteio != pais:
-          lista_d.append(d)
+        if sorteio != pais and escolha not in dicio_escolhas.keys():
+          dicio_escolhas[escolha] = d
+          dicio_ordenado = sorted(dicio_escolhas.items(), key=operator.itemgetter(1))
 
           i=0
-          while i < len(lista_d):
-              print('Distância até {0}: {1:.0f} km'.format(lista_escolha[i], lista_d[i]))
-              i+=1
+          while i < len(dicio_ordenado):
+            print('Distância até {0}: {1:.0f} km'.format(dicio_ordenado[i][0], dicio_ordenado[i][1]))
+            i+=1
     
       #Printa as dicas
         print('\n')
@@ -3968,10 +3983,12 @@ while tent > 0 and escolha != sorteio:
           else:
             print('{}{}'.format(chave, valor))
 
+        if n > -1:
+          print('Cores da bandeira -> {}'.format(', '.join(lista_cores_print)))
 
         print('\n')
 
-    if escolha not in lista_paises and escolha != 'dica':
+    if escolha not in lista_paises and escolha != 'dica' and escolha != 'desisto':
         tent+=1
         print('País desconhecido\n')
     
@@ -3981,6 +3998,17 @@ while tent > 0 and escolha != sorteio:
 
 #Fim
 if escolha == sorteio:
-    print('Parabéns, você acertou!')
+  print('Parabéns, você acertou!')
+
+elif escolha == 'desisto':
+  print('O país era {}'.format(sorteio))
+  
 else:
-    print('Acabaram as tentativas, o país era {}'.format(sorteio))
+  print('Acabaram as tentativas, o país era {}'.format(sorteio))
+
+
+from termcolor import colored
+a = 'oi'
+b = 'sei lá'
+
+print('voce tem' + colored(a, b)+ 'tentativas')
