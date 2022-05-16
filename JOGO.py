@@ -3821,13 +3821,11 @@ dados = {
     }
   }
 }
-
-dados = normaliza(dados)    
-sorteio =  sorteia_pais(dados)
-
+dados = normaliza(dados)
 jogar = 's'
 
-while jogar == 's':
+while jogar == 's':    
+  sorteio =  sorteia_pais(dados)
 
   print('Comandos:')
   print('dica       - entra no mercado de dicas')
@@ -3847,6 +3845,7 @@ while jogar == 's':
   lista_sem_letra_repet=[]
   lista_cores = []
   n=-1
+  m = False
   lista_cores_print = []
   dicio_escolhas = {}
   usa_cor = '1'
@@ -3909,9 +3908,7 @@ while jogar == 's':
               if letra_aleatoria in alfabeto:
                 lista_sem_letra_repet.append(letra_aleatoria_minuscula)
                 break
-            
-
-          print(f'Letras da capital: {", ".join(lista_sem_letra_repet)}')
+          m =True
           tent-=2
 
         if desejo == '3' and usa_area != 3:
@@ -3946,6 +3943,10 @@ while jogar == 's':
 
         if n > -1:
           print('Cores da bandeira -> {}'.format(', '.join(lista_cores_print)))
+
+        if m == True:
+            print(f'Letras da capital: {", ".join(lista_sem_letra_repet)}')
+
         print('\n')
       
 
@@ -4007,6 +4008,9 @@ while jogar == 's':
           if n > -1:
             print('Cores da bandeira -> {}'.format(', '.join(lista_cores_print)))
 
+          if m == True:
+            print(f'Letras da capital: {", ".join(lista_sem_letra_repet)}')
+
           print('\n')
 
       if escolha not in lista_paises and escolha != 'dica' and escolha != 'desisto':
@@ -4023,6 +4027,7 @@ while jogar == 's':
       else:
         print('Você tem ' + colored(tent,'red')+' tentativas')
 
+  print('\n')
 
   #Fim
   if escolha == sorteio:
@@ -4034,4 +4039,8 @@ while jogar == 's':
   else:
     print('Maciel mandou estudar mais, o país era {}'.format(sorteio))
 
+  print('\n')
   jogar = input('Jogar novamente? [s|n] ')
+  print('\n')
+
+print('Obrigado por jogar :)')
